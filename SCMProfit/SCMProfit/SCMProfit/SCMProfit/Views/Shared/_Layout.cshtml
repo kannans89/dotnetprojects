@@ -1,0 +1,40 @@
+﻿@using SCMProfit.LanguageClasses
+@using SCMProfitCore.ResourcesFiles
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <style>
+        </style>
+</head>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<body>
+    <div style="padding: 5px; background-color: aliceblue">
+        <b>@Resource.SelectLanguage:</b> @{
+            foreach (var i in SiteLanguage.listOfLanguage)
+            {
+            <text>||</text>@Html.ActionLink(i.LangFullName, "ChangeLanguage", "Customer", new { lang = i.LangCultureName }, null) <text>&nbsp;||</text>
+            }
+        }
+
+    </div>
+    <table class="table table-striped table-hover info" border="1" style="width: 100%; height: 100%; font-family: Arial">
+        <tr class="info" style="width: 100%">
+            <td style="width: 16.67%; background-color: white; text-align: center">
+                <div>@Html.ActionLink("Master", "", "Master")</div>
+            </td>
+            <td style="width: 16.67%; background-color: white; text-align: center">
+                <div>@Html.ActionLink("Customer", "NewRegistration", "Customer")</div>
+            </td>
+            <td style="width: 16.67%; background-color: white; text-align: center">
+                <div>@Html.ActionLink("Administration", "NewRegistration", "Administration")</div>
+            </td>
+        </tr>
+        <tr class="info">
+            @RenderBody();
+        </tr>
+    </table>
+</body>
+</html>

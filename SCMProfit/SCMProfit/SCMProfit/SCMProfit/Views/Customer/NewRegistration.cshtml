@@ -1,0 +1,398 @@
+﻿@using CaptchaMvc.HtmlHelpers
+@using NHibernate.Type
+@using SCMProfitCore.Model.CustomerModule
+@using SCMProfitCore.ResourcesFiles
+@using CurrencyType = SCMProfitCore.Model.CustomerModule.CurrencyType
+@model SCMProfit.Models.NewRegistrationViewModel
+
+@{
+    ViewBag.Title = Resource.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function generateAddress() {
+        document.getElementById('Customer_CustomerAddress').value = document.getElementById('Address1').value +
+            ' ' +
+            document.getElementById('Address2').value +
+            ' ' +
+            document.getElementById('City').value +
+            ' ' +
+            document.getElementById('State').value +
+            ' ' +
+            document.getElementById('Zip').value +
+            ' ' +
+            document.getElementById('Country').value;
+        var add = document.getElementById('Customer_CustomerAddress').value;
+        console.log(add);
+    }
+
+    function generatecontact() {
+        document.getElementById('Customer_PrimaryContact').value = document.getElementById('select').value +
+            document.getElementById('contact').value;
+        var add = document.getElementById('Customer_PrimaryContact').value;
+        console.log(add);
+    }
+</script>
+<script type="text/javascript">
+    function generateModule() {
+        var module = [];
+        $("input[class='module']:checked").each(function (i) {
+            var say = $(this).val();
+            module[i] = $(this).val();
+            console.log(module[i]);
+        });
+        document.getElementById('module').value = module;
+    }
+
+    function generateService() {
+        var service = [];
+        $("input[class='service']:checked").each(function (j) {
+            service[j] = $(this).val();
+            console.log(service[j]);
+        });
+        document.getElementById('service').value = service;
+    }
+
+</script>
+<style>
+    .control-label:before {
+        content: "*";
+        color: red;
+    }
+</style>
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var image = $('#image');
+        $('#password2').change(function () {
+            image.show();
+            var firstPassword = $('#password1').value;
+            var secondPassword = $('#password2').value;
+
+            if (firstPassword === secondPassword) {
+                image.hide();
+            } else {
+                image.hide();
+                $('#message').html("Please enter same password...").css('color', 'red');
+            }
+        });
+    });
+</script>
+<div>
+
+    <tr class="success">
+        <td style="width: auto; text-align: center"><a href="#BasicDetails">@Resource.BasicDetails</a></td>
+        <td style="width: auto; text-align: center"><a href="#LoginDetails">@Resource.LoginDetails</a></td>
+        <td style="width: auto; text-align: center"><a href="#SubscriptionDetails">@Resource.SubscriptionDetails</a></td>
+    </tr>
+    @using (@Html.BeginForm("NewRegistration", "Customer", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+    {
+        <tr>
+            <td colspan="3">
+                <br />
+                <h4><b>&nbsp;&nbsp;@Resource.GeneralInformation</b>
+                </h4>
+                <hr />
+                <br />
+
+                <div id="BasicDetails">
+                    <h4><b>&nbsp;&nbsp;&nbsp;@Resource.CustomerDetails</b></h4>
+                    <hr />
+                    <div class="col-lg-10">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.CompanyName:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Customer.CompanyName, new { @class = "form-control", @placeholder = Resource.CompanyName, @id = "contact-name" })
+                                @Html.ValidationMessageFor(m => m.Customer.CompanyName)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.Address1:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.AddressLine1, new { @class = "form-control", @placeholder = "", @id = "Address1" })
+                                @Html.ValidationMessageFor(m => m.Customer.CustomerAddress.AddressLine1)
+                            </div>
+
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.Address2:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.AddressLine2, new { @class = "form-control", @placeholder = "", @id = "Address2" })
+                                @Html.ValidationMessageFor(m => m.Customer.CustomerAddress.AddressLine2)
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-lg-offset-2 col-lg-3">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.City, new { @class = "form-control", @placeholder = Resource.City, @id = "City" })
+                                @Html.ValidationMessageFor(m => m.Customer.CustomerAddress.City)
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.State, new { @class = "form-control", @placeholder = Resource.State, @id = "State" })
+                                @Html.ValidationMessageFor(m => m.Customer.CustomerAddress.State)
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.ZipCode, new { @class = "form-control", @placeholder = Resource.ZipCode, @id = "Zip" })
+                                @Html.ValidationMessageFor(m => m.Customer.CustomerAddress.ZipCode)
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-lg-offset-2 col-lg-3">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.Country, new { @class = "form-control", @placeholder = Resource.Country, @id = "Country" })
+                                @Html.HiddenFor(m => m.Customer.CustomerAddress.Country)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.URL:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Customer.WebsiteUrl, new { @class = "form-control", @placeholder = Resource.URL, @id = "contact-website", @type = "url" })
+                                @Html.ValidationMessageFor(m => m.Customer.WebsiteUrl)
+                            </div>
+                        </div>
+
+                        <br />
+                        <h4><b>&nbsp;&nbsp;&nbsp;@Resource.PrimaryContact</b></h4>
+                        <hr />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.ContactPerson:</label>
+
+                            <div class=" col-lg-4">
+                                @Html.TextBoxFor(model => model.Customer.FirstName, new { @class = "form-control", @placeholder = Resource.FirstName, @id = "contact-website" })
+                                @Html.ValidationMessageFor(m => m.Customer.FirstName)
+                            </div>
+                            <div class=" col-lg-4">
+                                @Html.TextBoxFor(model => model.Customer.LastName, new { @class = "form-control", @placeholder = Resource.LastName, @id = "contact-website" })
+                                @Html.ValidationMessageFor(m => m.Customer.LastName)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.PhoneNumber:</label>
+                            <div class="col-lg-2">
+                                <select class="form-control" id="select">
+                                    <option value="+91">+91</option>
+                                    <option value="0">0</option>
+                                    <option value="">002</option>
+                                    <option value="">001</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.TextBox("Contact", null, new { @class = "form-control", @placeholder = Resource.ContactPerson, @id = "contact", @onchange = "generatecontact()" })
+                                @Html.ValidationMessageFor(m => m.Customer.PrimaryContact)
+                                @Html.HiddenFor(model => model.Customer.PrimaryContact)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.Email:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Customer.Email, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.Customer.Email)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.ShortName:</label>
+
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(model => model.Customer.ShortName, new { @class = "form-control", @placeholder = "Short Name", @id = "contact-shortName" })
+                                @Html.ValidationMessageFor(m => m.Customer.ShortName)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <h4><b>&nbsp;&nbsp;&nbsp;@Resource.Currency</b></h4>
+                        <hr />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">@Resource.BaseCurrency:</label>
+                            <div class="col-lg-2">
+                                <select class="form-control">
+                                    <option value="@(CurrencyType.INR)">@Resource.INDIA</option>
+                                    <option value="@(CurrencyType.EUR)">@Resource.Europe</option>
+                                    <option value="@(CurrencyType.CAD)">@Resource.Canada</option>
+                                    <option value="@(CurrencyType.USD)">@Resource.UnitedStates</option>
+                                    <option value="@(CurrencyType.CNY)">@Resource.China</option>
+                                    <option value="@(CurrencyType.PKR)">@Resource.Pakistani</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.HiddenFor(model => model.Customer.Role, new { Value = "user" })<br />
+                        <br />
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button class="btn btn-success"><a href="#LoginDetails">@Resource.Next</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+
+                <br />
+
+                <div id="LoginDetails">
+                    <h4><b>&nbsp;&nbsp;&nbsp;@Resource.LoginDetails</b></h4>
+                    <hr />
+                    <div class="col-lg-10">
+
+                        <div class="form-group">
+                            <label for="Customer-name" class="col-lg-2 control-label">@Resource.UserName:</label>
+
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(model => model.Customer.LoginDetails.UserName, new { @class = "form-control", @placeholder = Resource.UserName })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label for="Customer-add" class="col-lg-2 control-label">@Resource.Password:</label>
+
+                            <div class="col-lg-6">
+                                @Html.PasswordFor(model => model.Customer.LoginDetails.Password, new { @class = "form-control", @placeholder = Resource.Password, @id = "password1" })
+                            </div>
+
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label for="Customer-add" class="col-lg-2 control-label">@Resource.ConfirmPassword:</label>
+
+                            <div class="col-lg-6">
+                                @Html.PasswordFor(model => model.Customer.LoginDetails.Password, new { @class = "form-control", @placeholder = Resource.Password, @id = "password2" })
+                                <font id="message" style="color: red"></font>
+                                <img src="~/Images/image1.gif" id="image" style="display: none; width: 15px; height: 15px" />
+                            </div>
+
+                        </div>
+                        <br />
+                        <br />
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10 text-left" align="center">
+                                @Html.MathCaptcha()<br />
+                                <br />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-lg-offset-2">
+                                <button class="btn btn-success"><a href="#SubscriptionDetails">@Resource.Next</a></button>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                    </div>
+                </div>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <br />
+
+                <div id="SubscriptionDetails">
+                    <h4><b>&nbsp;&nbsp;&nbsp;@Resource.SubscriptionInfo</b></h4>
+                    <hr />
+                    <div class="col-lg-10">
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">@Resource.TypeOfSowftware:</label>
+                            <div class="col-lg-2">
+                                <select class="form-control custom-select">
+                                    <option value="@Model.CustomerSubscriptionDetail.Subscription" selected="selected">---Select---</option>
+                                    <option value="@CustomerSubscriptionType.Saas">Saas</option>
+                                    <option value="@CustomerSubscriptionType.OnPremise">On Premise</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label for="contact-website" class="col-lg-3 control-label">@Resource.NoOfUser:</label>
+
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.CustomerSubscriptionDetail.NumberOfNamedUsers, new { @class = "form-control", @placeholder = "", @id = "numberOfUser" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                        <div class="form-group">
+                            <label for="contact-website" class="col-lg-3 control-label">@Resource.Modules:</label>
+
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                            @for (int index=0;index<Model.ModuleList.Count;index++)
+                                            {
+                                                @Html.CheckBoxFor(m=>m.ModuleList[index].IsSelected)
+                                                @Model.ModuleList[index].ModuleName
+                                                <br/>
+                                            }
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <label class="col-lg-3 control-label text-right">@Resource.Service:</label>
+
+                            <div class="col-lg-3 text-left">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                          @for (int index=0;index<Model.ServiceList.Count;index++)
+                                            {
+                                                @Html.CheckBoxFor(m=>m.ServiceList[index].IsSelected)
+                                                @Model.ServiceList[index].ServiceName
+                                                <br/>
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                        <div class="form-group">
+
+                            <div class="col-lg-2 col-lg-offset-3">
+                                <button type="submit" class="btn btn-primary" onclick="postdata()">@Resource.Submit</button>
+                            </div>
+
+                            <div class="col-lg-4 text-left">
+                                @if (TempData["success"] != null)
+                                {
+                                    <span style="color: green">You Are Successfully Registered...</span>
+                                    <span style="color: green">Check Your Email For Login...</span>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+</div>

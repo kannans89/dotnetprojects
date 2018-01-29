@@ -1,0 +1,71 @@
+﻿@using System.Runtime.Versioning
+@using SCMProfit.LanguageClasses
+@using SCMProfitCore.ResourcesFiles
+@model  SCMProfit.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "SignIn";
+    Layout = "~/Views/Shared/LoginLayout.cshtml";
+}
+
+<style>
+    fieldset {
+        border: 2px solid rgb(0, 0, 0);
+        width: 700px;
+        margin: auto;
+    }
+
+    p {
+        color: red;
+    }
+</style>
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<body>
+    
+    <fieldset style="background-color: aliceblue">
+        <h4 style="color: green; text-align: center">@Resource.LOGIN</h4>
+    </fieldset>
+    <br />
+    <div>
+        <fieldset style="background-color: aliceblue">
+
+            <div>
+
+                @using (Html.BeginForm("SignIn", "Login", FormMethod.Post))
+                {
+
+                    <h4 style="color: green">@TempData["message"]</h4>
+                    <div class="form-horizontal" style="text-align: center">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CustomerLoginDetails.UserName)
+
+                            @Html.TextBoxFor(model => model.CustomerLoginDetails.UserName, htmlAttributes: new { placeholder = "EnterUserName" })
+                            
+                            @Html.ValidationMessageFor(m => m.CustomerLoginDetails.UserName)
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.CustomerLoginDetails.Password)
+
+                            @Html.PasswordFor(model => model.CustomerLoginDetails.Password, htmlAttributes: new {placeholder = "EnterPassword"})
+
+                            @Html.ValidationMessageFor(m => m.CustomerLoginDetails.Password)
+                        </div>
+                         <div>
+                            @Html.LabelFor(model => model.CustomerLoginDetails.RememberMe)
+                            @Html.CheckBoxFor(model => model.CustomerLoginDetails.RememberMe, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div style="text-align: center">
+                                <input type="submit" value="@Resource.SignIn" class="btn btn-info btn-md" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </fieldset>
+    </div>
+</body>

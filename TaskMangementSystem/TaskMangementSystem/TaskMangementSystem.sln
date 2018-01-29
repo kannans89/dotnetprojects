@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMangementSystem", "TaskMangementSystem\TaskMangementSystem.csproj", "{753D2B7F-DAAB-4336-8DD2-31E602C5C1AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagementSystemLibrary", "TaskManagementSystemLibrary\TaskManagementSystemLibrary.csproj", "{079827F2-A5B5-4A89-85A5-F4FBF4684102}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMangementSystemLibrary.Test", "TaskMangementSystemLibrary.Test\TaskMangementSystemLibrary.Test.csproj", "{21B688EB-31F9-41A6-8EBC-1BE5AD9C1DD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{753D2B7F-DAAB-4336-8DD2-31E602C5C1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{753D2B7F-DAAB-4336-8DD2-31E602C5C1AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{753D2B7F-DAAB-4336-8DD2-31E602C5C1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{753D2B7F-DAAB-4336-8DD2-31E602C5C1AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{079827F2-A5B5-4A89-85A5-F4FBF4684102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{079827F2-A5B5-4A89-85A5-F4FBF4684102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{079827F2-A5B5-4A89-85A5-F4FBF4684102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{079827F2-A5B5-4A89-85A5-F4FBF4684102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B688EB-31F9-41A6-8EBC-1BE5AD9C1DD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B688EB-31F9-41A6-8EBC-1BE5AD9C1DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B688EB-31F9-41A6-8EBC-1BE5AD9C1DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B688EB-31F9-41A6-8EBC-1BE5AD9C1DD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

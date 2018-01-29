@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "TenantManagement";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+ <script>
+        var Getdata = function () {
+            console.log("inside  ajax");
+            // jQuery.support.cors = true;
+            var searchdata = document.getElementById('search').value;
+            var e = document.getElementById("dropdownlist");
+            var value = e.options[e.selectedIndex].value;
+            console.log("value"+ value);
+            console.log("searchdata" + searchdata);
+            $.ajax({
+                url: '@Url.Action("SearchCustomer")',
+                type: 'POST',
+                dataType: 'html',
+                cache: false,
+                data: {
+                    searchdata: searchdata,
+                    searchBy: value
+                },
+                success: function (data) {
+                    var trHTML = '';
+                    console.log("success");
+                    console.log(data);
+
+                    //$.each(tasks, function (i, item) {
+
+                    //    trHTML += '<tr><td>' + item.MainTaskGuid + '</td><td>' + item.Name + item.StartTime +
+                    //        '</td><td>' + item.EndTime + '</td><td>' + item.Priority + '</td></tr>';
+
+                    //});
+                    $('#table').html(data);
+                    console.log("success");
+
+                },
+                error: function () {
+                    console.log("fail !!!!");
+                }
+
+            }
+            );
+        };
+    </script>
+<div>
+    <tr>
+        <td colspan="4">
+            <br />
+            <h4><b>&nbsp;&nbsp;&nbsp;Tenant List</b></h4>
+            <hr />
+            <div class="col-lg-12">
+                <label for="" class="col-lg-1 text-right control-label">Search:</label>
+                <div class="col-lg-2">
+                    <select class="form-control" id="dropdownlist">
+                        <option value="" selected="selected">---Search By---</option>
+                        <option value="Partner">Partner</option>
+                        <option value="Customer">Customer</option>
+                        <option value="Service">Service Type</option>
+                        <option value="Module">Module</option>
+                        <option value="Service">Service</option>
+                        <option value="Enabled">Enabled</option>
+                        <option value="Disabled">Disabled</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="input-group">
+                        <input type="text" id="search"class="form-control" placeholder="Search for Tasks...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="button" onclick="Getdata()">Go!</button>
+                        </span>
+                    </div>
+               
+                </div>
+            </div>
+
+        </td>
+    </tr>
+    <tr colspan="4">
+        <div id="table">
+            
+        </div>
+    </tr>
+</div>

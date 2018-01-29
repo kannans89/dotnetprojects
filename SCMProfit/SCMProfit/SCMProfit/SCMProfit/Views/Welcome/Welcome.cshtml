@@ -1,0 +1,23 @@
+﻿@using SCMProfitCore.Model.MasterModule
+@model SCMProfit.Models.PartnerViewModel
+@{
+    ViewBag.Title = "Welcome";
+}
+
+<h2>Welcome</h2>
+
+<table class="table table-striped table-hover info" border="1" style="width: 100%; height: auto; font-family: Arial">
+    <thead>
+        <tr>
+            @foreach (Partner partner in Model.Partners)
+            {
+
+                <th>
+                    <img src="~/Images/logo.PNG" width="200" height="200" /><br/>
+                    @Html.ActionLink(partner.PartnerName, "NewRegistration", "Customer", new { partnerId = partner.PartnerId }, null)
+                </th>
+       
+            }
+        </tr>
+    </thead>
+</table>

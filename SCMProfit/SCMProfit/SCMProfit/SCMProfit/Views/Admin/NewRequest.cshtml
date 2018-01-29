@@ -1,0 +1,139 @@
+﻿@using SCMProfitCore.Model.CustomerModule
+@model SCMProfit.Models.NewRegistrationViewModel
+
+@{
+    ViewBag.Title = "NewRequest";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+ <script>
+     "use strict";
+     var PerformAction = function()
+     {
+         var customerId = $("#ApproveButton").attr("customerId");
+         $.ajax({
+                 url: '@Url.Action("CustomerApproved")',
+                 type: 'POST',
+                 dataType: 'html',
+                 cache: false,
+                 data: customerId,
+                 success: function(data) {
+                     console.log("success");
+                     console.log(data);
+                     //TODO:add data
+                     $('#table').html(data);
+                     console.log("success");
+
+                 },
+                 error: function() {
+                     console.log("fail !!!!");
+                 }
+
+             }
+         );
+     }
+ </script>
+
+<div>
+    <tr>
+        <td colspan="4">
+            <br />
+            <h4><b>&nbsp;&nbsp;&nbsp;New Subscription Request</b></h4>
+            <hr />
+            <div class="col-lg-12">
+                <label for="" class="col-lg-1 text-right control-label">Search:</label>
+                <div class="col-lg-2">
+                    <select class="form-control">
+                        <option value="" selected="selected">---Search By---</option>
+                        <option value="">Partner</option>
+                        <option value="">Customer</option>
+                        <option value="">Service Type</option>
+                        <option value="">Module</option>
+                        <option value="">Service</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="input-group">
+                        <input type="text" id="search" class="form-control" placeholder="Search for Tasks...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="button" onclick="Getdata()">Go!</button>
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </div>
+            </div>
+
+        </td>
+    </tr>
+</div>
+<div>
+
+    <table class="table" border="1">
+        <thead>
+            <tr style="font-size: large">
+                <th>Partner</th>
+                <th>Customer</th>
+                <th>Currency</th>
+                <th>Type</th>
+                <th>Users</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Customer customer in Model.CustomerList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(m => customer.Partner.PartnerName)</td>
+                    <td>@Html.DisplayFor(m => customer.CompanyName)</td>
+                    <td>@Html.DisplayFor(m => customer.Currency)</td>
+                    <td>@Html.DisplayFor(m => m.CustomerSubscriptionDetail.Subscription)</td>
+                    <td>@Html.DisplayFor(m => m.CustomerSubscriptionDetail.NumberOfNamedUsers)</td>
+                    <td>@if (customer.IsApproved == 0)
+                        {
+                        @Html.ActionLink("Approve", "CustomerApproved", new { customerId = customer.CustomerId }, new
+                        {
+                            @Id="ApproveButton",
+                            @class = "btn btn-info",
+                            @style = "background-color: green;",
+                            onclick = "PerformAction();"
+                        })
+                        }
+                        else
+                        {
+                        @Html.ActionLink("Approved", "CustomerAlreadyApproved", new { customerId = customer.CustomerId }, new
+                        {
+                          //   @Id="ApproveButton",
+                            @class = "btn btn-info",
+                            @style = "background-color: green;",
+                            onclick = "return confirm('Are you sure you wish to approved this customer?');"
+                        })
+                        }
+                        @if (customer.IsApproved == 1)
+                        {
+                            @Html.ActionLink("Reject", "CustomerReject", new { customerId = customer.CustomerId }, new
+                            {
+                             //    @Id="ApproveButton",
+                                @class = "btn btn-info",
+                                @style = "background-color: #f44336;",
+                                onclick = "return confirm('Are you sure you wish to reject this customer?');"
+                            })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Rejected", "CustomerAlreadyReject", new { customerId = customer.CustomerId }, new
+                            {
+                             //    @Id="ApproveButton",
+                                @class = "btn btn-info",
+                                @style = "background-color: #f44336;",
+                                onclick = "return confirm('Are you sure you wish to reject this customer?');"
+                            })
+                        }
+
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    <h4 style="color: green">@TempData["message"]</h4>
+</div>
+

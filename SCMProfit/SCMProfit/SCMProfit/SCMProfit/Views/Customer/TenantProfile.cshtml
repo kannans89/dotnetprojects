@@ -1,0 +1,273 @@
+﻿@using CaptchaMvc.HtmlHelpers
+@using NHibernate.Type
+@using SCMProfitCore.Model.CustomerModule
+@using CurrencyType = SCMProfitCore.Model.CustomerModule.CurrencyType
+@model SCMProfit.Models.NewRegistrationViewModel
+
+@{
+    Layout = "~/Views/Shared/CustomerLayout.cshtml";
+}
+<style>
+    .control-label:before {
+        content: "*";
+        color: red;
+    }
+</style>
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div>
+
+    <tr class="success">
+        <td style="width: auto; text-align: center"><a href="#BasicDetails">Basic Details</a></td>
+        <td style="width: auto; text-align: center"><a href="#LoginDetails">Login Details</a></td>
+        <td style="width: auto; text-align: center"><a href="#SubscriptionDetails">Subscription Details</a></td>
+        <td style="width: auto; text-align: center"></td>
+    </tr>
+    @using (@Html.BeginForm("NewRegistration", "Customer", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+    {
+        <tr>
+            <td colspan="4">
+                <br />
+                <h4><b>&nbsp;&nbsp;General Information</b>
+                </h4>
+                <hr />
+                <br />
+
+                <div id="BasicDetails">
+                    <h4><b>&nbsp;&nbsp;&nbsp;Customer Details</b></h4>
+                    <hr />
+                    <div class="col-lg-10">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Customer Name:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Customer.CompanyName, new { @class = "form-control", @placeholder = "Name", @id = "contact-name" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Address :</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m => m.Customer.CustomerAddress.AddressLine1, new { @class = "form-control", @placeholder = "", @id = "Address1", @onchange = "generateAddress();" })
+                            </div>
+
+                        </div>
+                         <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Address Line 2:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m=>m.Customer.CustomerAddress.AddressLine2,new { @class = "form-control", @placeholder = "", @id = "Address2", @onchange = "generateAddress();" })
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-lg-offset-2 col-lg-3">
+                                @Html.TextBoxFor(m=>m.Customer.CustomerAddress.City, new { @class = "form-control", @placeholder = "City", @id = "City", @onchange = "generateAddress();" })
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m=>m.Customer.CustomerAddress.State, new { @class = "form-control", @placeholder = "State/Province", @id = "State", @onchange = "generateAddress();" })
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.TextBoxFor(m=>m.Customer.CustomerAddress.ZipCode, new { @class = "form-control", @placeholder = "Zip Code", @id = "Zip", @onchange = "generateAddress();" })
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-lg-offset-2 col-lg-3">
+                                @Html.TextBoxFor(m=>m.Customer.CustomerAddress.Country, new { @class = "form-control", @placeholder = "Country", @id = "Country", @onchange = "generateAddress();" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Website URL:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Customer.WebsiteUrl, new { @class = "form-control", @placeholder = "Website", @id = "contact-website", @type = "url" })
+                            </div>
+                        </div>
+
+                        <br />
+                        <h4><b>&nbsp;&nbsp;&nbsp;Primary Contact</b></h4>
+                        <hr />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Contact Person:</label>
+
+                            <div class=" col-lg-4">
+                                @Html.TextBoxFor(model => model.Customer.FirstName, new { @class = "form-control", @placeholder = "First Name", @id = "contact-website" })
+                            </div>
+                            <div class=" col-lg-4">
+                                @Html.TextBoxFor(model => model.Customer.LastName, new { @class = "form-control", @placeholder = "Last Name", @id = "contact-website" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Phone Number:</label>
+                            <div class="col-lg-2">
+                                <select class="form-control" id="select">
+                                    <option value="+91">+91</option>
+                                    <option value="0">0</option>
+                                    <option value=""></option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.TextBoxFor(m => m.Customer.PrimaryContact, new { @class = "form-control", @id = "contact", @onchange = "generatecontact()" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Email:</label>
+
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Customer.Email, new { @class = "form-control", @placeholder = "" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Short Name:</label>
+
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(model => model.Customer.ShortName, new { @class = "form-control", @placeholder = "Short Name", @id = "contact-shortName" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <h4><b>&nbsp;&nbsp;&nbsp;Currency</b></h4>
+                        <hr />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Base Currency:</label>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(model => model.Customer.Currency, Enum.GetNames(typeof(CurrencyType)).Select(e => new SelectListItem { Text = e }), "-- Select Status --", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button class="btn btn-success"><a href="#LoginDetails">Next</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+
+                <br />
+
+                <div id="LoginDetails">
+                    <h4><b>&nbsp;&nbsp;&nbsp;Login Details</b></h4>
+                    <hr />
+                    <div class="col-lg-10">
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Username:</label>
+
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(model => model.Customer.LoginDetails.UserName, new { @class = "form-control", @placeholder = "Username" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Password:</label>
+
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(model => model.Customer.LoginDetails.Password, new { @class = "form-control", @placeholder = "Password", @id = "password1" })
+                            </div>
+
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <div class="col-lg-12 col-lg-offset-2">
+                                <button class="btn btn-success"><a href="#SubscriptionDetails">Next</a></button>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                    </div>
+                </div>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <br />
+
+                <div id="SubscriptionDetails">
+                    <h4><b>&nbsp;&nbsp;&nbsp;Subscription Info</b></h4>
+                    <hr />
+                    <div class="col-lg-10">
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Saas/On Premise:</label>
+                            <div class="col-lg-2">
+                                @Html.DropDownListFor(model => model.CustomerSubscriptionDetail.Subscription, Enum.GetNames(typeof(CustomerSubscriptionType)).Select(e => new SelectListItem { Text = e }), "-- Select Status --", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">No. Of Named User:</label>
+
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.CustomerSubscriptionDetail.NumberOfNamedUsers, new { @class = "form-control", @placeholder = "", @id = "numberOfUser" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Modules:</label>
+
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                     <div class="panel-body">
+                                            @for (int index=0;index<Model.ModuleList.Count;index++)
+                                            {
+                                                @Html.CheckBoxFor(m=>m.ModuleList[index].IsSelected)
+                                                @Model.ModuleList[index].ModuleName
+                                                <br/>
+                                            }
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <label class="col-lg-3 control-label text-right">Service:</label>
+
+                            <div class="col-lg-3 text-left">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                          @for (int index=0;index<Model.ServiceList.Count;index++)
+                                            {
+                                                @Html.CheckBoxFor(m=>m.ServiceList[index].IsSelected)
+                                                @Model.ServiceList[index].ServiceName
+                                                <br/>
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+</div>
